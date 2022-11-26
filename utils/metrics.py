@@ -3,7 +3,8 @@ import os
 import torch
 
 
-def average_precision(ypred, path='', k=None, eps=1e-10, reduce_mean=True, dataset=0, print_metrics=True):
+def average_precision(ypred, path='', k=None, eps=1e-10, reduce_mean=True, dataset=0, dataset_name='benchmark',
+                      print_metrics=True):
     """
     Calculating performance metrics
     :param ypred: square distance matrix
@@ -19,7 +20,7 @@ def average_precision(ypred, path='', k=None, eps=1e-10, reduce_mean=True, datas
         ytrue = os.path.join(path, 'data/ytrue_val.pt')
         ytrue = torch.load(ytrue).float()
     elif dataset == 1:  # loading the ground truth for Da-TACOS
-        ytrue = os.path.join(path, 'data/ytrue_benchmark.pt')
+        ytrue = os.path.join(path, f'data/ytrue_{dataset_name}.pt')
         ytrue = torch.load(ytrue).float()
 
     if k is None:

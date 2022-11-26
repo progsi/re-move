@@ -90,7 +90,8 @@ def evaluate(exp_name,
 
     # computing evaluation metrics from the obtained distances
     average_precision(
-        -1 * dist_all.cpu().float().clone() + torch.diag(torch.ones(len(test_data)) * float('-inf')), dataset=1)
+        -1 * dist_all.cpu().float().clone() + torch.diag(torch.ones(len(test_data)) * float('-inf')), dataset=1,
+        dataset_name=dataset_name)
 
     test_time = time.monotonic() - start_time
 
