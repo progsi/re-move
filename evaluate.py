@@ -73,7 +73,7 @@ def evaluate(exp_name,
 
             except RuntimeError:
 
-                emb = torch.empty(1, 100, device=device)
+                emb = torch.empty(1, 256, device=device)
 
             # appending the current embedding to the collection of embeddings
             embed_all = torch.cat((embed_all, emb))
