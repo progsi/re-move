@@ -67,7 +67,13 @@ def evaluate(exp_name,
 
             # forward pass of the model
             # obtaining the embeddings of each item in the batch
-            emb = model(item)
+            try:
+
+                emb = model(item)
+
+            except RuntimeError:
+
+                emb = torch.empty(1, 100)
 
             # appending the current embedding to the collection of embeddings
             embed_all = torch.cat((embed_all, emb))

@@ -35,8 +35,10 @@ def main(run_type, cfg, experiment_name):
         print(f"{len(dataset_names)} found for prediction.")
 
         for dataset_name in dataset_names:
-            print(f"Predicting for dataset {dataset_name}")
-            evaluate(experiment_name, cfg['exp_type'], str(dataset_name), cfg['main_path'], cfg['emb_size'], cfg['loss'])
+
+            if not os.path.isfile(os.path.join(cfg['main_path'], f'data/predictions/{dataset_name}.pt')):
+                print(f"Predicting for dataset {dataset_name}")
+                evaluate(experiment_name, cfg['exp_type'], str(dataset_name), cfg['main_path'], cfg['emb_size'], cfg['loss'])
     else:
         print('Run type not understood.')
 
