@@ -77,16 +77,16 @@ def evaluate(exp_name,
             dist_all = pairwise_euclidean_distance(embed_all)
             dist_all /= model.fin_emb_size
 
-            # save output predictions if pred_all is set as run_type
-            if dataset_name != 'benchmark':
-                torch.save(dist_all, os.path.join(main_path, f'data/predictions/{dataset_name}.pt'))
-
         # if NormalizedSoftmax loss is used, the distance function is cosine distance
         elif loss == 2:
             dist_all = -1 * pairwise_cosine_similarity(embed_all)
         # if Group loss is used, the distance function is Pearson correlation coefficient
         else:
             dist_all = -1 * pairwise_pearson_coef(embed_all)
+
+    # save output predictions if pred_all is set as run_type
+    if dataset_name != 'benchmark':
+        torch.save(dist_all, os.path.join(main_path, f'data/predictions/{dataset_name}.pt'))
 
     # computing evaluation metrics from the obtained distances
     average_precision(
