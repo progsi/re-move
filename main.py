@@ -32,6 +32,8 @@ def main(run_type, cfg, experiment_name):
         # find all names of datasets
         dataset_names = [name.split('_')[0] for name in filenames if '_crema' in name]
 
+        print(f"{len(dataset_names)} found for prediction.")
+
         for dataset_name in dataset_names:
             print(f"Predicting for dataset {dataset_name}")
             evaluate(experiment_name, cfg['exp_type'], str(dataset_name), cfg['main_path'], cfg['emb_size'], cfg['loss'])
