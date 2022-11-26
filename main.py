@@ -24,7 +24,17 @@ def main(run_type, cfg, experiment_name):
             Exception('Training mode not understood.')
         trainer.train()
     elif run_type == 'test':
-        evaluate(experiment_name, cfg['exp_type'], cfg['main_path'], cfg['emb_size'], cfg['loss'])
+        evaluate(experiment_name, cfg['exp_type'], 'benchmark', cfg['main_path'], cfg['emb_size'], cfg['loss'])
+    elif run_type == 'pred_all':
+
+        # get all files in data dir
+        filenames = os.listdir(os.path.join(cfg['main_path'], 'data'))
+        # find all names of datasets
+        dataset_names = [name.split('_')[0] for name in filenames if '_crema' in name]
+
+        for dataset_name in dataset_names:
+            print(f"Predicting for dataset {dataset_name}")
+            evaluate(experiment_name, cfg['exp_type'], str(dataset_name), cfg['main_path'], cfg['emb_size'], cfg['loss'])
     else:
         print('Run type not understood.')
 
@@ -37,8 +47,9 @@ if __name__ == '__main__':
                         '--run_type',
                         type=str,
                         default='train',
-                        choices=['train', 'test'],
-                        help='Whether to run the training or the evaluation script.')
+                        choices=['train', 'test', 'pred_all'],
+                        help='Whether to run the training or the evaluation script or to predict for all the datasets '
+                             'stored in the data directory and store the predictions.')
     parser.add_argument('-mp',
                         '--main_path',
                         type=str,

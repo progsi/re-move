@@ -16,6 +16,7 @@ from utils.data_utils import handle_device
 
 def evaluate(exp_name,
              exp_type,
+             dataset_name,
              main_path,
              emb_size,
              loss
@@ -32,7 +33,7 @@ def evaluate(exp_name,
 
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
-    eval_dataset = os.path.join(main_path, 'data/benchmark_crema.pt')
+    eval_dataset = os.path.join(main_path, f'data/{dataset_name}_crema.pt')
 
     print('Evaluating model {} on dataset {}.'.format(exp_name, eval_dataset))
 
@@ -75,6 +76,11 @@ def evaluate(exp_name,
         if loss in [0, 1]:
             dist_all = pairwise_euclidean_distance(embed_all)
             dist_all /= model.fin_emb_size
+
+            # save output predictions if pred_all is set as run_type
+            if dataset_name != 'benchmark':
+                torch.save(dist_all, os.path.join(main_path, f'data/predictions/{dataset_name}.pt'))
+
         # if NormalizedSoftmax loss is used, the distance function is cosine distance
         elif loss == 2:
             dist_all = -1 * pairwise_cosine_similarity(embed_all)
